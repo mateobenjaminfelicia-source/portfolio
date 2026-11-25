@@ -14,7 +14,9 @@
         <h3>{{ p.t.nombre }}</h3>
         <p>{{ p.t.descripcion }}</p>
         <div class="tags">{% for t in p.tecnologias %}<span>{{ t.nombre }}</span>{% endfor %}</div>
-        {% if p.repositorio_url %}<a href="{{ p.repositorio_url }}" target="_blank" rel="noopener">Ver proyecto <i class="fa-solid fa-arrow-up-right-from-square"></i></a>{% endif %}
+        {# Si hay demo (sitio online) se muestra "Ver sitio"; el repositorio va aparte como "Código" #}
+        {% if p.demo_url %}<a href="{{ p.demo_url }}" target="_blank" rel="noopener">Ver sitio <i class="fa-solid fa-arrow-up-right-from-square"></i></a>{% endif %}
+        {% if p.repositorio_url %}<a href="{{ p.repositorio_url }}" target="_blank" rel="noopener">{{ 'Código' if p.demo_url else 'Ver proyecto' }} <i class="fa-brands fa-github"></i></a>{% endif %}
       </div>
     </article>
     {% else %}

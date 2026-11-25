@@ -7,6 +7,13 @@ from app.models import Administrador
 auth_bp = Blueprint("auth", __name__)
 
 
+def _destino_seguro(destino):
+    """Solo acepta rutas internas del sitio, como "/admin/". Rechaza "//otro.com",
+    "/\\otro.com" o "https://otro.com", que el navegador interpretaría como otro sitio."""
+    return (bool(destino) and destino.startswith("/") and not destino.startswith("//")
+            and "\\" not in destino and not urlparse(destino).scheme and not urlparse(destino).netloc)
+
+
 @auth_bp.route("/login", methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
@@ -17,7 +24,7 @@ def login():
         if admin and admin.check_password(form.password.data):   # compara contra el hash
             login_user(admin)
             destino = request.args.get("next")
-            if not destino or urlparse(destino).netloc:          # evita open redirect
+            if not _destino_seguro(destino):                     # evita open redirect
                 destino = url_for("admin.panel")
             return redirect(destino)
         flash("Usuario o contraseña incorrectos.", "danger")

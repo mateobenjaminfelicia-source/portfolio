@@ -1,6 +1,4 @@
-import os
-from flask import (Blueprint, render_template, redirect, url_for, flash,
-                   send_from_directory, current_app)
+from flask import Blueprint, render_template, redirect, url_for, flash, abort
 from app.forms.contacto import ContactoForm
 from app.models import (Perfil, PerfilIdioma, Contacto, Formacion, Experiencia, Proyecto,
                         Capacitacion, Reconocimiento, ObjetivoAcademico, PerfilTecnologia,
@@ -57,9 +55,9 @@ def contacto():
 
 @public_bp.route("/cv")
 def descargar_cv():
-    # Si el perfil tiene cv_url se redirige ahí; si no, se sirve app/static/cv/cv.pdf
+    # Atajo /cv: redirige al PDF cargado en el perfil (ej. /static/docs/cv_mateo_felicia.pdf).
+    # Los PDF viven dentro del repo (app/static/docs) porque el disco de Render se borra en cada deploy.
     perfil = Perfil.query.first()
     if perfil and perfil.cv_url:
         return redirect(perfil.cv_url)
-    carpeta = os.path.join(current_app.static_folder, "cv")
-    return send_from_directory(carpeta, "cv.pdf", as_attachment=True)
+    abort(404)

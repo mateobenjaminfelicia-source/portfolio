@@ -2,3 +2,7 @@
 venv/
 __pycache__/
 *.pyc
+# Logs del servidor local (pueden tener el PIN del debugger)
+.flask-run.*
+*.log
+instance/
