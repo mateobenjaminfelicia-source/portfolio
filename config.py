@@ -9,6 +9,7 @@ EN_PRODUCCION = os.environ.get("APP_ENV") == "production"
 
 
 class Config:
+    EN_PRODUCCION = EN_PRODUCCION   # para que la app lo lea con app.config["EN_PRODUCCION"]
     # SECRET_KEY firma la sesión y los tokens CSRF. En producción NO puede faltar: si alguien
     # conoce la clave (y una clave por defecto está en el repo público) puede falsificar sesiones.
     SECRET_KEY = os.environ.get("SECRET_KEY")

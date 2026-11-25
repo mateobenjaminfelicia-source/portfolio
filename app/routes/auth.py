@@ -3,6 +3,7 @@ from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_user, logout_user, current_user
 from app.forms.auth import LoginForm
 from app.models import Administrador
+from app import limiter
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -15,6 +16,7 @@ def _destino_seguro(destino):
 
 
 @auth_bp.route("/login", methods=["GET", "POST"])
+@limiter.limit("5 per minute", methods=["POST"])   # máximo 5 intentos por minuto por IP
 def login():
     if current_user.is_authenticated:
         return redirect(url_for("admin.panel"))
@@ -29,6 +31,13 @@ def login():
             return redirect(destino)
         flash("Usuario o contraseña incorrectos.", "danger")
     return render_template("login.html", form=form)
+
+
+@auth_bp.app_errorhandler(429)
+def demasiados_intentos(error):
+    # Se pasó del límite: en vez de una página de error, volvemos al login con un aviso.
+    flash("Demasiados intentos. Esperá un minuto y probá de nuevo.", "danger")
+    return render_template("login.html", form=LoginForm()), 429
 
 
 @auth_bp.route("/logout", methods=["POST"])
