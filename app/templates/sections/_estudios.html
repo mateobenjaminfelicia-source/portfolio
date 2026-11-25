@@ -27,11 +27,12 @@
   {{ boton_agregar('capacitaciones', 'Agregar certificación') }}
   {% endif %}
 
-  {% if reconocimientos %}
+  {% if reconocimientos or es_admin %}
   <h3 class="subtitulo reveal">Reconocimientos</h3>
   <div class="cert-grid">
     {% for r in reconocimientos %}
     <article class="info-card reveal">
+      {{ controles('reconocimientos', r) }}
       <i class="fa-solid fa-award"></i>
       <small>{{ r.organizacion.nombre if r.organizacion else 'Reconocimiento' }}{% if r.anio %} · {{ r.anio }}{% endif %}</small>
       <strong>{{ r.t.nombre }}</strong>
@@ -40,5 +41,6 @@
     </article>
     {% endfor %}
   </div>
+  {{ boton_agregar('reconocimientos', 'Agregar reconocimiento') }}
   {% endif %}
 </section>

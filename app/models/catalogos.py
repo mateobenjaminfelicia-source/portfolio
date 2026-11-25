@@ -55,6 +55,7 @@ class Organizacion(BaseModel):
 class PerfilIdioma(BaseModel):
     """Idiomas que habla el propietario y su nivel (PK compuesta)."""
     __tablename__ = "perfil_idioma"
+    CLAVE = "id_idioma"   # el panel identifica el registro por el idioma (la PK es compuesta)
     id_perfil = db.Column(db.Integer, db.ForeignKey("perfil.id_perfil"), primary_key=True)
     id_idioma = db.Column(db.SmallInteger, db.ForeignKey("idiomas.id_idioma"), primary_key=True)
     nivel = db.Column(db.Enum("nativo", "A1", "A2", "B1", "B2", "C1", "C2"), nullable=False)

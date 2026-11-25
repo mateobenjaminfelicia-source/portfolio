@@ -11,13 +11,14 @@
 </div>
 {% endmacro %}
 
-{# Botones agregar / editar / eliminar: SOLO se dibujan si hay sesión de admin #}
+{# Botones agregar / editar / eliminar: SOLO se dibujan si hay sesión de admin.
+   Apuntan a las rutas genéricas del blueprint admin; `item.ident` es el id que usa la URL. #}
 {% macro controles(seccion, item, solo_editar=False) %}{% if es_admin %}
 <div class="edit-controls">
-  {% if not solo_editar %}<a href="{{ url_for('admin_form', seccion=seccion) }}" title="Agregar" aria-label="Agregar"><i class="fa-solid fa-plus"></i></a>{% endif %}
-  <a href="{{ url_for('admin_form', seccion=seccion, id=item.id) }}" title="Editar" aria-label="Editar"><i class="fa-solid fa-pen"></i></a>
+  {% if not solo_editar %}<a href="{{ url_for('admin.nuevo', seccion=seccion) }}" title="Agregar" aria-label="Agregar"><i class="fa-solid fa-plus"></i></a>{% endif %}
+  <a href="{{ url_for('admin.editar', seccion=seccion, ident=item.ident) }}" title="Editar" aria-label="Editar"><i class="fa-solid fa-pen"></i></a>
   {% if not solo_editar %}
-  <form method="post" action="{{ url_for('admin_eliminar', seccion=seccion, id=item.id) }}" onsubmit="return confirm('¿Querés eliminar esta tarjeta?')">
+  <form method="post" action="{{ url_for('admin.eliminar', seccion=seccion, ident=item.ident) }}" onsubmit="return confirm('¿Querés eliminar esta tarjeta?')">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <button type="submit" title="Eliminar" aria-label="Eliminar"><i class="fa-solid fa-trash"></i></button>
   </form>
@@ -26,7 +27,7 @@
 {% endif %}{% endmacro %}
 
 {% macro boton_agregar(seccion, texto) %}{% if es_admin %}
-<a class="add-button" href="{{ url_for('admin_form', seccion=seccion) }}"><i class="fa-solid fa-plus"></i> {{ texto }}</a>
+<a class="add-button" href="{{ url_for('admin.nuevo', seccion=seccion) }}"><i class="fa-solid fa-plus"></i> {{ texto }}</a>
 {% endif %}{% endmacro %}
 
 {# Tarjeta de línea de tiempo (la usan Estudios y Experiencia) #}

@@ -1,0 +1,32 @@
+{% from 'macros/_macros.html' import asset %}
+<section id="inicio" class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-copy reveal">
+    {% if perfil.disponible %}<span class="availability"><i></i> Disponible para nuevos desafíos</span>{% endif %}
+    <p class="hero-kicker">Hola, soy</p>
+    <h1>{{ perfil.nombre }}<br><span>{{ perfil.apellido }}.</span></h1>
+    <h2>{{ perfil.titulo }}</h2>
+    <p class="hero-text">{{ perfil.resumen }}</p>
+    <div class="hero-actions">
+      {% if perfil.cv_url %}<a class="button primary" href="{{ asset(perfil.cv_url) }}" download><i class="fa-solid fa-download"></i> Descargar CV <small>PDF</small></a>{% endif %}
+      <a class="button secondary" href="#contacto">Contactame <i class="fa-solid fa-arrow-down"></i></a>
+    </div>
+    <div class="socials">
+      <span>Encontrame en</span>
+      {% if perfil.github_url %}<a href="{{ perfil.github_url }}" target="_blank" rel="noopener" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>{% endif %}
+      {% if perfil.linkedin_url %}<a href="{{ perfil.linkedin_url }}" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>{% endif %}
+      {% if perfil.email %}<a href="mailto:{{ perfil.email }}" aria-label="Correo"><i class="fa-regular fa-envelope"></i></a>{% endif %}
+    </div>
+  </div>
+  <div class="portrait-wrap reveal">
+    <div class="portrait-orbit"><span class="orbit-label"><i class="fa-solid fa-code"></i> DEV</span></div>
+    {% if perfil.foto %}<img src="{{ asset(perfil.foto) }}" alt="Foto de {{ perfil.nombre }} {{ perfil.apellido }}" width="900" height="900" decoding="async">{% endif %}
+    {% if perfil.ubicacion %}
+    <div class="floating-card">
+      <span><i class="fa-solid fa-location-dot"></i></span>
+      <div><small>Actualmente en</small><strong>{{ perfil.ubicacion }}</strong></div>
+    </div>
+    {% endif %}
+  </div>
+  <a class="scroll-hint" href="#sobre-mi"><span>Scroll</span><i></i></a>
+</section>

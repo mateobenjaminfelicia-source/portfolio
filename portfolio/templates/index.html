@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{# Página principal: cada sección es un parcial en templates/sections/ #}
+{% block content %}
+  {% include "sections/_hero.html" %}
+  {% include "sections/_sobre_mi.html" %}
+  {% include "sections/_estudios.html" %}
+  {% include "sections/_experiencia.html" %}
+  {% include "sections/_tecnologias.html" %}
+  {% include "sections/_proyectos.html" %}
+  {% include "sections/_contacto.html" %}
+{% endblock %}

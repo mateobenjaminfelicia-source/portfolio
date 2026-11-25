@@ -1,0 +1,44 @@
+{# Macros reutilizables. Se importan con: {% from 'macros/_macros.html' import ... with context %} #}
+
+{# Devuelve la URL de un archivo: si empieza con http se usa tal cual; si no, se busca en /static #}
+{% macro asset(ruta) -%}{% if ruta.startswith('http') %}{{ ruta }}{% else %}{{ url_for('static', filename=ruta) }}{% endif %}{%- endmacro %}
+
+{% macro encabezado(etiqueta, titulo, descripcion='') %}
+<div class="section-heading reveal">
+  <span class="eyebrow">{{ etiqueta }}</span>
+  <h2>{{ titulo }}</h2>
+  {% if descripcion %}<p>{{ descripcion }}</p>{% endif %}
+</div>
+{% endmacro %}
+
+{# Botones agregar / editar / eliminar: SOLO se dibujan si hay sesión de admin #}
+{% macro controles(seccion, item, solo_editar=False) %}{% if es_admin %}
+<div class="edit-controls">
+  {% if not solo_editar %}<a href="{{ url_for('admin_form', seccion=seccion) }}" title="Agregar" aria-label="Agregar"><i class="fa-solid fa-plus"></i></a>{% endif %}
+  <a href="{{ url_for('admin_form', seccion=seccion, id=item.id) }}" title="Editar" aria-label="Editar"><i class="fa-solid fa-pen"></i></a>
+  {% if not solo_editar %}
+  <form method="post" action="{{ url_for('admin_eliminar', seccion=seccion, id=item.id) }}" onsubmit="return confirm('¿Querés eliminar esta tarjeta?')">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button type="submit" title="Eliminar" aria-label="Eliminar"><i class="fa-solid fa-trash"></i></button>
+  </form>
+  {% endif %}
+</div>
+{% endif %}{% endmacro %}
+
+{% macro boton_agregar(seccion, texto) %}{% if es_admin %}
+<a class="add-button" href="{{ url_for('admin_form', seccion=seccion) }}"><i class="fa-solid fa-plus"></i> {{ texto }}</a>
+{% endif %}{% endmacro %}
+
+{# Tarjeta de línea de tiempo (la usan Estudios y Experiencia) #}
+{% macro timeline_item(seccion, item, titulo, subtitulo, periodo, descripcion) %}
+<article class="timeline-item reveal">
+  <div class="timeline-dot"><i></i></div>
+  <div class="timeline-card">
+    {{ controles(seccion, item) }}
+    <span class="timeline-meta">{{ periodo }}</span>
+    <h3>{{ titulo }}</h3>
+    <h4>{{ subtitulo }}</h4>
+    {% if descripcion %}<p>{{ descripcion }}</p>{% endif %}
+  </div>
+</article>
+{% endmacro %}

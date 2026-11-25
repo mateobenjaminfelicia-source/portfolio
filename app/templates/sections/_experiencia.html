@@ -3,7 +3,9 @@
   {{ encabezado('03 / Recorrido', 'Experiencia', 'Aprender haciendo: proyectos que me acercaron al mundo profesional.') }}
   <div class="timeline">
     {% for x in experiencias %}
-      {{ timeline_item('experiencias', x, x.puesto, x.empresa, x.periodo, x.descripcion) }}
+      {# El puesto y la descripción viven en la traducción (x.t); la empresa, en la organización #}
+      {% set periodo = (x.anio_inicio|string if x.anio_inicio else '') ~ ' — ' ~ ('Actualidad' if x.actualmente or not x.anio_fin else x.anio_fin|string) %}
+      {{ timeline_item('experiencias', x, x.t.puesto if x.t, x.organizacion.nombre if x.organizacion, periodo, x.t.descripcion if x.t) }}
     {% else %}
       <p class="vacio">Todavía no hay experiencia cargada.</p>
     {% endfor %}

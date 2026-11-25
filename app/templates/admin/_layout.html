@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="es" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Panel{% endblock %} — Portfolio CMS</title>
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='img/favicon.svg') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  {# Reutiliza las variables de color del portfolio (style.css) y agrega el diseño propio del panel (admin.css) #}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+  <script>try{document.documentElement.dataset.theme=localStorage.getItem('theme')||'dark'}catch(e){}</script>
+</head>
+<body class="admin">
+{# SECCIONES_UI (título + ícono por sección) lo inyecta routes/admin.py en todas las páginas del panel #}
+<div class="admin-shell">
+  <aside class="admin-sidebar">
+    <a class="admin-brand" href="{{ url_for('admin.panel') }}">
+      <span>{{ perfil.nombre|first if perfil }}{{ perfil.apellido|first if perfil }}</span>
+      <div><b>Portfolio CMS</b><small>Panel de edición</small></div>
+    </a>
+    <nav class="admin-nav" aria-label="Secciones del panel">
+      <a href="{{ url_for('admin.panel') }}#mensajes"><i class="fa-regular fa-envelope"></i> Mensajes</a>
+      {% for clave, (texto, icono) in SECCIONES_UI.items() %}
+        <a href="{{ url_for('admin.panel') }}#{{ clave }}"><i class="{{ icono }}"></i> {{ texto }}</a>
+      {% endfor %}
+    </nav>
+    <div class="admin-sidebar-foot">
+      <a class="admin-btn ghost" href="{{ url_for('public.index') }}"><i class="fa-solid fa-arrow-up-right-from-square"></i> Ver portfolio</a>
+      <form method="post" action="{{ url_for('auth.logout') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button class="admin-btn ghost" type="submit"><i class="fa-solid fa-arrow-right-from-bracket"></i> Cerrar sesión</button>
+      </form>
+    </div>
+  </aside>
+
+  <main class="admin-main">
+    {% with mensajes = get_flashed_messages(with_categories=true) %}
+      {% for categoria, texto in mensajes %}
+        <p class="admin-flash {{ categoria }}"><i class="fa-solid {{ 'fa-circle-exclamation' if categoria in ('error','danger') else 'fa-circle-check' }}"></i> {{ texto }}</p>
+      {% endfor %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+</div>
+</body>
+</html>

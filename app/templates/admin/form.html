@@ -1,28 +1,34 @@
-<!doctype html>
-<html lang="es">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ titulo }} — Admin</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
-<body>
-  <main class="auth-page">
-    <section class="modal">
-      <div class="modal-head"><h1>{{ titulo }}</h1></div>
-      <form class="modal-form" method="post" novalidate>
-        {{ form.hidden_tag() }}
-        {% for campo in form if campo.type != 'CSRFTokenField' %}
-          <label>{{ campo.label.text }} {{ campo() }}
-            {% for error in campo.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
-          </label>
-        {% endfor %}
-        <div class="modal-actions">
-          <a class="button secondary" href="{{ url_for('admin.panel') }}">Cancelar</a>
-          <button class="button primary" type="submit">Guardar</button>
-        </div>
-      </form>
-    </section>
-  </main>
-</body>
-</html>
+{% extends "admin/_layout.html" %}
+{% block title %}{{ titulo }}{% endblock %}
+{% block content %}
+<header class="admin-head">
+  <div>
+    <a class="back-link" href="{{ url_for('admin.panel') }}#{{ seccion }}"><i class="fa-solid fa-arrow-left"></i> Volver al panel</a>
+    <h1>{{ titulo }}</h1>
+  </div>
+</header>
+
+{# Formulario GENÉRICO: dibuja los campos de cualquier sección. Orden y Visible van al final. #}
+<form class="admin-card admin-form" method="post" novalidate>
+  {{ form.hidden_tag() }}
+  {% set al_final = ['orden', 'visible'] %}
+  {% for campo in form if campo.type != 'CSRFTokenField' and campo.name not in al_final %}
+    <label class="field {{ 'field-wide' if campo.type == 'TextAreaField' }} {{ 'field-check' if campo.type == 'BooleanField' }}">
+      <span>{{ campo.label.text }}</span>
+      {{ campo(rows=5) if campo.type == 'TextAreaField' else campo() }}
+      {% for error in campo.errors %}<em class="field-error">{{ error }}</em>{% endfor %}
+    </label>
+  {% endfor %}
+  {% for nombre in al_final if form[nombre] is defined %}
+    <label class="field {{ 'field-check' if form[nombre].type == 'BooleanField' }}">
+      <span>{{ form[nombre].label.text }}</span>
+      {{ form[nombre]() }}
+      {% for error in form[nombre].errors %}<em class="field-error">{{ error }}</em>{% endfor %}
+    </label>
+  {% endfor %}
+  <div class="form-actions">
+    <a class="admin-btn ghost" href="{{ url_for('admin.panel') }}#{{ seccion }}">Cancelar</a>
+    <button class="admin-btn primary" type="submit"><i class="fa-regular fa-floppy-disk"></i> Guardar</button>
+  </div>
+</form>
+{% endblock %}

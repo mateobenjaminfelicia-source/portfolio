@@ -1,0 +1,100 @@
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on http://127.0.0.1:5000
+Press CTRL+C to quit
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 790-934-581
+127.0.0.1 - - [24/Nov/2026 10:19:02] "GET /login HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "C:\Users\HP\Proyectos_y_Estudios\portfolio\venv\Lib\site-packages\flask\app.py", line 1536, in __call__
+    return self.wsgi_app(environ, start_response)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Proyectos_y_Estudios\portfolio\venv\Lib\site-packages\flask\app.py", line 1514, in wsgi_app
+    response = self.handle_exception(e)
+  File "C:\Users\HP\Proyectos_y_Estudios\portfolio\venv\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\HP\Proyectos_y_Estudios\portfolio\venv\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\HP\Proyectos_y_Estudios\portfolio\venv\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\HP\Proyectos_y_Estudios\portfolio\venv\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\HP\Proyectos_y_Estudios\portfolio\app\routes\auth.py", line 24, in login
+    return render_template("login.html", form=form)
+  File "C:\Users\HP\Proyectos_y_Estudios\portfolio\venv\Lib\site-packages\flask\templating.py", line 151, in render_template
+    return _render(app, template, context)
+  File "C:\Users\HP\Proyectos_y_Estudios\portfolio\venv\Lib\site-packages\flask\templating.py", line 132, in _render
+    rv = template.render(context)
+  File "C:\Users\HP\Proyectos_y_Estudios\portfolio\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\HP\Proyectos_y_Estudios\portfolio\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "C:\Users\HP\Proyectos_y_Estudios\portfolio\app\templates\login.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "C:\Users\HP\Proyectos_y_Estudios\portfolio\app\templates\base.html", line 6, in top-level template code
+    <meta name="description" content="{% block description %}Portfolio de {{ perfil.nombre }} {{ perfil.apellido }}{% endblock %}">
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Proyectos_y_Estudios\portfolio\app\templates\base.html", line 6, in block 'description'
+    <meta name="description" content="{% block description %}Portfolio de {{ perfil.nombre }} {{ perfil.apellido }}{% endblock %}">
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Proyectos_y_Estudios\portfolio\venv\Lib\site-packages\jinja2\environment.py", line 490, in getattr
+    return getattr(obj, attribute)
+jinja2.exceptions.UndefinedError: 'perfil' is undefined
+127.0.0.1 - - [24/Nov/2026 10:20:15] "GET /login HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "C:\Users\HP\Proyectos_y_Estudios\portfolio\venv\Lib\site-packages\flask\app.py", line 1536, in __call__
+    return self.wsgi_app(environ, start_response)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Proyectos_y_Estudios\portfolio\venv\Lib\site-packages\flask\app.py", line 1514, in wsgi_app
+    response = self.handle_exception(e)
+  File "C:\Users\HP\Proyectos_y_Estudios\portfolio\venv\Lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\HP\Proyectos_y_Estudios\portfolio\venv\Lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\HP\Proyectos_y_Estudios\portfolio\venv\Lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\HP\Proyectos_y_Estudios\portfolio\venv\Lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\HP\Proyectos_y_Estudios\portfolio\app\routes\auth.py", line 24, in login
+    return render_template("login.html", form=form)
+  File "C:\Users\HP\Proyectos_y_Estudios\portfolio\venv\Lib\site-packages\flask\templating.py", line 151, in render_template
+    return _render(app, template, context)
+  File "C:\Users\HP\Proyectos_y_Estudios\portfolio\venv\Lib\site-packages\flask\templating.py", line 132, in _render
+    rv = template.render(context)
+  File "C:\Users\HP\Proyectos_y_Estudios\portfolio\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\HP\Proyectos_y_Estudios\portfolio\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "C:\Users\HP\Proyectos_y_Estudios\portfolio\app\templates\login.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "C:\Users\HP\Proyectos_y_Estudios\portfolio\app\templates\base.html", line 6, in top-level template code
+    <meta name="description" content="{% block description %}Portfolio de {{ perfil.nombre }} {{ perfil.apellido }}{% endblock %}">
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Proyectos_y_Estudios\portfolio\app\templates\base.html", line 6, in block 'description'
+    <meta name="description" content="{% block description %}Portfolio de {{ perfil.nombre }} {{ perfil.apellido }}{% endblock %}">
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\HP\Proyectos_y_Estudios\portfolio\venv\Lib\site-packages\jinja2\environment.py", line 490, in getattr
+    return getattr(obj, attribute)
+jinja2.exceptions.UndefinedError: 'perfil' is undefined
+127.0.0.1 - - [24/Nov/2026 10:21:07] "GET /login HTTP/1.1" 200 -
+127.0.0.1 - - [24/Nov/2026 10:23:16] "GET /login HTTP/1.1" 200 -
+127.0.0.1 - - [24/Nov/2026 10:24:07] "GET /login HTTP/1.1" 200 -
+127.0.0.1 - - [24/Nov/2026 10:24:07] "GET /static/css/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [24/Nov/2026 10:24:07] "GET /favicon.ico HTTP/1.1" 404 -
+ * Detected change in 'C:\\Users\\HP\\Proyectos_y_Estudios\\portfolio\\app\\routes\\admin.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 790-934-581
+127.0.0.1 - - [24/Nov/2026 10:30:24] "GET /login HTTP/1.1" 200 -
+127.0.0.1 - - [24/Nov/2026 10:33:27] "GET /login HTTP/1.1" 200 -
+127.0.0.1 - - [24/Nov/2026 10:33:27] "GET /static/css/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [24/Nov/2026 10:33:27] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [24/Nov/2026 10:33:52] "POST /login HTTP/1.1" 200 -
+127.0.0.1 - - [24/Nov/2026 10:33:52] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [24/Nov/2026 10:33:59] "POST /login HTTP/1.1" 200 -
+127.0.0.1 - - [24/Nov/2026 10:34:01] "POST /login HTTP/1.1" 200 -
+127.0.0.1 - - [24/Nov/2026 10:34:01] "GET /static/css/style.css HTTP/1.1" 304 -

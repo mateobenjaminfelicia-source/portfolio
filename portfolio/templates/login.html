@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Iniciar sesión — {{ perfil.nombre }}{% endblock %}
+{% block content %}
+<section class="auth-page">
+  <div class="modal">
+    <div class="modal-head"><div><span class="eyebrow">Portfolio CMS</span><h3>Bienvenido de nuevo</h3></div></div>
+    <p class="modal-intro">Ingresá para administrar el contenido del portfolio.</p>
+    {# Formulario de Flask-WTF: hidden_tag() agrega el token CSRF #}
+    <form class="modal-form" method="post" novalidate>
+      {{ form.hidden_tag() }}
+      <label>Usuario
+        <div class="input-icon"><i class="fa-regular fa-user"></i>{{ form.username(placeholder='Ingresá tu usuario', autofocus=true) }}</div>
+      </label>
+      <label>Contraseña
+        <div class="input-icon"><i class="fa-solid fa-lock"></i>{{ form.password(placeholder='Ingresá tu contraseña') }}
+          <button type="button" id="toggle-pass" aria-label="Mostrar u ocultar contraseña"><i class="fa-regular fa-eye"></i></button>
+        </div>
+      </label>
+      {% for campo in (form.username, form.password) %}{% for e in campo.errors %}
+        <p class="error-message"><i class="fa-solid fa-circle-exclamation"></i> {{ e }}</p>
+      {% endfor %}{% endfor %}
+      <button class="button primary wide" type="submit">Iniciar sesión <i class="fa-solid fa-arrow-right"></i></button>
+    </form>
+  </div>
+</section>
+{% endblock %}

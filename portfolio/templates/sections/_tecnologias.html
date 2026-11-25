@@ -1,0 +1,22 @@
+{% from 'macros/_macros.html' import encabezado, controles, boton_agregar with context %}
+{# El nivel en la BD es un ENUM; acá se traduce a % para la barra. Ajustá las claves a tus valores. #}
+{% set porcentaje = {'basico': 35, 'básico': 35, 'intermedio': 65, 'avanzado': 90, 'experto': 100} %}
+<section id="tecnologias" class="section muted-section">
+  {{ encabezado('04 / Toolkit', 'Tecnologías', 'Herramientas que uso para convertir problemas en productos.') }}
+  <div class="tech-grid">
+    {% for t in tecnologias %}
+    <article class="tech-card reveal">
+      {{ controles('tecnologias', t) }}
+      <div class="tech-head">
+        <span><i class="{{ t.icono or 'fa-solid fa-code' }}"></i></span>
+        <b>{{ t.nivel|capitalize }}</b>
+      </div>
+      <h3>{{ t.nombre }}</h3>
+      <div class="skill-track"><i style="--level: {{ porcentaje.get(t.nivel|lower, 50) }}%"></i></div>
+    </article>
+    {% else %}
+      <p class="vacio">Todavía no hay tecnologías cargadas.</p>
+    {% endfor %}
+  </div>
+  {{ boton_agregar('tecnologias', 'Agregar tecnología') }}
+</section>

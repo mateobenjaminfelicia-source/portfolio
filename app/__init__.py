@@ -25,4 +25,13 @@ def create_app(config_object="config.Config"):
     app.register_blueprint(auth_bp)
     app.register_blueprint(admin_bp, url_prefix="/admin")
 
+    @app.context_processor
+    def datos_globales():
+        # base.html (navbar, footer, <title>) usa `perfil` y `es_admin` en TODAS las páginas.
+        # Un context processor los inyecta en cada template desde un solo lugar, en vez de
+        # pasarlos a mano en cada render_template (ese olvido causaba "'perfil' is undefined").
+        from flask_login import current_user
+        from app.models import Perfil
+        return {"perfil": Perfil.query.first(), "es_admin": current_user.is_authenticated}
+
     return app
