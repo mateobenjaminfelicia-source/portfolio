@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ titulo }} — Admin</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <main class="auth-page">
+    <section class="modal">
+      <div class="modal-head"><h1>{{ titulo }}</h1></div>
+      <form class="modal-form" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        {% for campo in form if campo.type != 'CSRFTokenField' %}
+          <label>{{ campo.label.text }} {{ campo() }}
+            {% for error in campo.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+          </label>
+        {% endfor %}
+        <div class="modal-actions">
+          <a class="button secondary" href="{{ url_for('admin.panel') }}">Cancelar</a>
+          <button class="button primary" type="submit">Guardar</button>
+        </div>
+      </form>
+    </section>
+  </main>
+</body>
+</html>

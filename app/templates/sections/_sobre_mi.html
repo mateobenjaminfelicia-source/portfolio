@@ -1,0 +1,28 @@
+{% from 'macros/_macros.html' import encabezado, controles, boton_agregar with context %}
+<section id="sobre-mi" class="section">
+  {{ encabezado('01 / Sobre mí', 'Curiosidad que se convierte en código.') }}
+  <div class="about-grid">
+    <div class="about-copy reveal">
+      {{ controles('perfil', perfil, solo_editar=True) }}
+      {# El texto se separa en párrafos con una línea en blanco; el primero es el destacado #}
+      {% for parrafo in (perfil.sobre_mi or '').split('\n\n') if parrafo.strip() %}
+        <p {% if loop.first %}class="lead"{% endif %}>{{ parrafo }}</p>
+      {% endfor %}
+      <div class="signature">{{ perfil.nombre }} {{ perfil.apellido|first }}.</div>
+    </div>
+    <div>
+      <div class="personal-grid">
+        {% if perfil.edad %}<article class="info-card reveal"><i class="fa-regular fa-calendar"></i><small>Edad</small><strong>{{ perfil.edad }} años</strong></article>{% endif %}
+        {% if perfil.ubicacion %}<article class="info-card reveal"><i class="fa-solid fa-location-dot"></i><small>Ubicación</small><strong>{{ perfil.ubicacion }}</strong></article>{% endif %}
+        {% for idioma in idiomas %}
+        <article class="info-card reveal">
+          {{ controles('idiomas', idioma) }}
+          <i class="fa-solid fa-language"></i><small>Idioma</small><strong>{{ idioma.idioma.nombre }} · {{ idioma.nivel }}</strong>
+        </article>
+        {% endfor %}
+        {% if perfil.intereses %}<article class="info-card reveal"><i class="fa-regular fa-heart"></i><small>Intereses</small><strong>{{ perfil.intereses }}</strong></article>{% endif %}
+      </div>
+      {{ boton_agregar('idiomas', 'Agregar idioma') }}
+    </div>
+  </div>
+</section>

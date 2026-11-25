@@ -1,14 +1,92 @@
 <!DOCTYPE html>
-<html lang="es">
-
+<html lang="es" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}Mi Portfolio{% endblock %}</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{% block description %}Portfolio de {{ perfil.nombre }} {{ perfil.apellido }}{% endblock %}">
+  <meta name="theme-color" content="#0B0F10">
+  <title>{% block title %}{{ perfil.nombre }} {{ perfil.apellido }} — {{ perfil.titulo }}{% endblock %}</title>
+
+  <!-- FAVICON -->
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='img/favicon.svg') }}">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png') }}">
+
+  <!-- FUENTES (Google Fonts): Inter para texto, Space Grotesk para títulos -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
+
+  <!-- ÍCONOS (Font Awesome) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <!-- Tema guardado: se aplica antes de pintar para evitar el "parpadeo" -->
+  <script>try{document.documentElement.dataset.theme=localStorage.getItem('theme')||'dark'}catch(e){}</script>
+  <noscript><style>.reveal{opacity:1;transform:none}.skill-track i{width:var(--level)}</style></noscript>
+  {% block extra_head %}{% endblock %}
 </head>
-
 <body>
-    {% block content %}{% endblock %}
-</body>
+{% set nav = [('inicio','Inicio'),('sobre-mi','Sobre mí'),('estudios','Estudios'),('experiencia','Experiencia'),('tecnologias','Tecnologías'),('proyectos','Proyectos'),('contacto','Contacto')] %}
+{% macro logo() %}<a class="logo" href="{{ url_for('public.index') }}#inicio" aria-label="Ir al inicio"><span>{{ perfil.nombre|first }}{{ perfil.apellido|first }}</span><b>{{ perfil.nombre }}.</b></a>{% endmacro %}
 
+<div class="app-shell">
+  {% if es_admin %}
+  <div class="editor-bar">
+    <span><i class="fa-solid fa-circle-check"></i> Modo edición activo</span>
+      <form method="post" action="{{ url_for('auth.logout') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button type="submit">Cerrar sesión <i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+    </form>
+  </div>
+  {% endif %}
+
+  <!-- NAVBAR -->
+  <header class="navbar {{ 'with-editor' if es_admin }}">
+    {{ logo() }}
+    <nav id="menu" aria-label="Navegación principal">
+      {% for id, texto in nav %}<a href="{{ url_for('public.index') }}#{{ id }}">{{ texto }}</a>{% endfor %}
+      {% if not es_admin %}<a class="nav-login" href="{{ url_for('auth.login') }}">Iniciar sesión</a>{% endif %}
+    </nav>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Cambiar tema"><i class="fa-solid fa-sun"></i><span>Claro</span></button>
+      {% if not es_admin %}<a class="login-button" href="{{ url_for('auth.login') }}"><i class="fa-regular fa-user"></i> Iniciar sesión</a>{% endif %}
+      <button class="menu-button" id="menu-button" type="button" aria-label="Abrir menú"><i class="fa-solid fa-bars"></i></button>
+    </div>
+  </header>
+
+  <!-- MENSAJES FLASH (flask.flash) -->
+  {% with mensajes = get_flashed_messages(with_categories=true) %}
+    {% if mensajes %}
+    <div class="flash-wrap">
+      {% for categoria, texto in mensajes %}
+      <p class="flash {{ categoria }}"><i class="fa-solid {{ 'fa-circle-exclamation' if categoria in ('error','danger') else 'fa-circle-check' }}"></i> {{ texto }}</p>
+      {% endfor %}
+    </div>
+    {% endif %}
+  {% endwith %}
+
+  <main>{% block content %}{% endblock %}</main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      {{ logo() }}
+      <p>{{ perfil.frase_footer or 'Diseñando mi camino, una línea de código a la vez.' }}</p>
+      <div class="footer-socials">
+        {% if perfil.github_url %}<a href="{{ perfil.github_url }}" target="_blank" rel="noopener" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>{% endif %}
+        {% if perfil.linkedin_url %}<a href="{{ perfil.linkedin_url }}" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>{% endif %}
+        {% if perfil.email %}<a href="mailto:{{ perfil.email }}" aria-label="Email"><i class="fa-regular fa-envelope"></i></a>{% endif %}
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span data-anio>2026</span> {{ perfil.nombre }} {{ perfil.apellido }}</span>
+      <div>{% for id, texto in nav[:4] %}<a href="{{ url_for('public.index') }}#{{ id }}">{{ texto }}</a>{% endfor %}</div>
+      <a href="#inicio">Volver arriba <i class="fa-solid fa-arrow-up"></i></a>
+    </div>
+  </footer>
+</div>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% block scripts %}{% endblock %}
+</body>
 </html>

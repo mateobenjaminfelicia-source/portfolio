@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="es" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Iniciar sesión — Portfolio CMS</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <main class="auth-page">
+    <section class="modal" aria-labelledby="login-title">
+      <div class="modal-head">
+        <div><span class="eyebrow">Portfolio CMS</span><h1 id="login-title">Bienvenido de nuevo</h1></div>
+      </div>
+      <p class="modal-intro">Ingresá para administrar el contenido del portfolio.</p>
+      {% with mensajes = get_flashed_messages(with_categories=true) %}
+        {% for categoria, texto in mensajes %}
+          <p class="flash {{ categoria }}">{{ texto }}</p>
+        {% endfor %}
+      {% endwith %}
+      <form class="modal-form" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <label>Usuario
+          <div class="input-icon">{{ form.username(placeholder='Ingresá tu usuario', autofocus=true) }}</div>
+        </label>
+        <label>Contraseña
+          <div class="input-icon">{{ form.password(placeholder='Ingresá tu contraseña') }}</div>
+        </label>
+        {% for campo in (form.username, form.password) %}
+          {% for error in campo.errors %}<p class="error-message">{{ error }}</p>{% endfor %}
+        {% endfor %}
+        <button class="button primary wide" type="submit">Iniciar sesión</button>
+      </form>
+    </section>
+  </main>
+</body>
+</html>

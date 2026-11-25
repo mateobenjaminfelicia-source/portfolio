@@ -1,0 +1,25 @@
+{% from 'macros/_macros.html' import encabezado, controles, boton_agregar, asset with context %}
+<section id="proyectos" class="section">
+  {{ encabezado('05 / Selección', 'Proyectos destacados', 'Una muestra de lo que construyo mientras sigo aprendiendo.') }}
+  <div class="projects-grid">
+    {% for p in proyectos %}
+    <article class="project-card reveal">
+      {{ controles('proyectos', p) }}
+      <div class="project-image">
+        {% if p.imagen_url %}<img src="{{ asset(p.imagen_url) }}" alt="Captura del proyecto {{ p.t.nombre }}" width="1200" height="800" loading="lazy" decoding="async">{% endif %}
+        <span>{{ '%02d'|format(loop.index) }}</span>
+      </div>
+      <div class="project-body">
+        <small>Proyecto{% if p.anio_inicio %} · {{ p.anio_inicio }}{% endif %}</small>
+        <h3>{{ p.t.nombre }}</h3>
+        <p>{{ p.t.descripcion }}</p>
+        <div class="tags">{% for t in p.tecnologias %}<span>{{ t.nombre }}</span>{% endfor %}</div>
+        {% if p.repositorio_url %}<a href="{{ p.repositorio_url }}" target="_blank" rel="noopener">Ver proyecto <i class="fa-solid fa-arrow-up-right-from-square"></i></a>{% endif %}
+      </div>
+    </article>
+    {% else %}
+      <p class="vacio">Todavía no hay proyectos cargados.</p>
+    {% endfor %}
+  </div>
+  {{ boton_agregar('proyectos', 'Agregar proyecto') }}
+</section>

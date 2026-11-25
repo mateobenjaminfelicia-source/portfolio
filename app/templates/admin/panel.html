@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><title>Panel</title></head>
+<body>
+  <h1>Panel</h1>
+  <form method="post" action="{{ url_for('auth.logout') }}" style="display:inline">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button type="submit">Salir</button>
+  </form>
+  <p>
+    <a href="{{ url_for('admin.crear_organizacion') }}">Crear organización</a>
+    <a href="{{ url_for('admin.crear_formacion') }}">Crear formación</a>
+  </p>
+  {% with msgs = get_flashed_messages(with_categories=true) %}
+    {% for cat, m in msgs %}<p class="{{ cat }}">{{ m }}</p>{% endfor %}
+  {% endwith %}
+
+  <h2>Mensajes</h2>
+  <ul>
+  {% for m in mensajes %}
+    <li>{{ 'Leído' if m.leido else 'Nuevo' }} — {{ m.etiqueta() }}: {{ m.mensaje }}
+      {% if not m.leido %}
+      <form method="post" action="{{ url_for('admin.marcar_leido', id=m.id_mensaje) }}" style="display:inline">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button>Marcar leído</button>
+      </form>{% endif %}
+    </li>
+  {% else %}<li>Sin mensajes.</li>{% endfor %}
+  </ul>
+
+  <h2>Organizaciones</h2>
+  <ul>
+  {% for org in organizaciones %}
+    <li>{{ org.nombre }}
+      <form method="post" action="{{ url_for('admin.eliminar_organizacion', ident=org.id_organizacion) }}" style="display:inline">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button type="submit">Eliminar</button>
+      </form>
+    </li>
+  {% else %}<li>Vacío.</li>{% endfor %}
+  </ul>
+
+  {% for nombre, items in secciones.items() %}
+    <h2>{{ nombre|capitalize }}</h2>
+    <ul>
+    {% for it in items %}
+      <li>{{ it.etiqueta() }} — {{ 'visible' if it.visible else 'oculto' }}
+        <form method="post" action="{{ url_for('admin.alternar_visible', seccion=nombre, ident=it.ident) }}" style="display:inline">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button>Mostrar/ocultar</button>
+        </form>{% if nombre == 'formaciones' %}
+        <form method="post" action="{{ url_for('admin.eliminar_formacion', ident=it.id_formacion) }}" style="display:inline">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button type="submit">Eliminar</button>
+        </form>{% endif %}
+      </li>
+    {% else %}<li>Vacío.</li>{% endfor %}
+    </ul>
+  {% endfor %}
+</body></html>

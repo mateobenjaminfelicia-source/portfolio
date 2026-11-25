@@ -1,0 +1,44 @@
+{% from 'macros/_macros.html' import encabezado, timeline_item, controles, boton_agregar, asset with context %}
+<section id="estudios" class="section muted-section">
+  {{ encabezado('02 / Formación', 'Estudios', 'Un recorrido de aprendizaje continuo, dentro y fuera del aula.') }}
+  <div class="timeline">
+    {% for e in formaciones %}
+      {% set periodo = (e.anio_inicio|string if e.anio_inicio else '') ~ ' — ' ~ (e.anio_fin|string if e.anio_fin else 'Actualidad') %}
+      {{ timeline_item('formaciones', e, e.t.titulo, e.organizacion.nombre, periodo, e.t.descripcion) }}
+    {% else %}
+      <p class="vacio">Todavía no hay estudios cargados.</p>
+    {% endfor %}
+  </div>
+  {{ boton_agregar('formaciones', 'Agregar estudio') }}
+
+  {% if capacitaciones or es_admin %}
+  <h3 class="subtitulo reveal">Certificaciones</h3>
+  <div class="cert-grid">
+    {% for c in capacitaciones %}
+    <article class="info-card reveal">
+      {{ controles('capacitaciones', c) }}
+      <i class="fa-solid fa-certificate"></i>
+      <small>{{ c.organizacion.nombre if c.organizacion else 'Formación' }}{% if c.anio_fin %} · {{ c.anio_fin }}{% endif %}</small>
+      <strong>{{ c.t.nombre }}</strong>
+      {% if c.certificado_url %}<a class="card-link" href="{{ asset(c.certificado_url) }}" target="_blank" rel="noopener">Ver credencial <i class="fa-solid fa-arrow-up-right-from-square"></i></a>{% endif %}
+    </article>
+    {% endfor %}
+  </div>
+  {{ boton_agregar('capacitaciones', 'Agregar certificación') }}
+  {% endif %}
+
+  {% if reconocimientos %}
+  <h3 class="subtitulo reveal">Reconocimientos</h3>
+  <div class="cert-grid">
+    {% for r in reconocimientos %}
+    <article class="info-card reveal">
+      <i class="fa-solid fa-award"></i>
+      <small>{{ r.organizacion.nombre if r.organizacion else 'Reconocimiento' }}{% if r.anio %} · {{ r.anio }}{% endif %}</small>
+      <strong>{{ r.t.nombre }}</strong>
+      {% if r.t.resultado %}<p>{{ r.t.resultado }}</p>{% endif %}
+      {% if r.t.descripcion %}<p>{{ r.t.descripcion }}</p>{% endif %}
+    </article>
+    {% endfor %}
+  </div>
+  {% endif %}
+</section>
