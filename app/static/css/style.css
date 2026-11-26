@@ -102,6 +102,18 @@ textarea{resize:vertical}
 .editor-bar button {
   border-bottom: 1px solid currentColor;
 }
+/* Acciones del modo edición: volver al panel y cerrar sesión, una al lado de la otra */
+.editor-actions {
+  display: flex;
+  gap: 22px;
+  align-items: center;
+}
+.editor-actions a {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  border-bottom: 1px solid currentColor;
+}
 .navbar {
   position: fixed;
   z-index: 60;

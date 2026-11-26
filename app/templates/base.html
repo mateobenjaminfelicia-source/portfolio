@@ -33,10 +33,13 @@
   {% if es_admin %}
   <div class="editor-bar">
     <span><i class="fa-solid fa-circle-check"></i> Modo edición activo</span>
+    <div class="editor-actions">
+      <a href="{{ url_for('admin.panel') }}"><i class="fa-solid fa-gauge"></i> Panel</a>
       <form method="post" action="{{ url_for('auth.logout') }}">
-      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-      <button type="submit">Cerrar sesión <i class="fa-solid fa-arrow-right-from-bracket"></i></button>
-    </form>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button type="submit">Cerrar sesión <i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+      </form>
+    </div>
   </div>
   {% endif %}
 
